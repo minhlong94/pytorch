@@ -315,7 +315,7 @@ mha_fwd(const at::Tensor &q,         // total_q x num_heads x head_size, total_q
     at::PhiloxCudaState rng_engine_inputs;
 
     // We want to checkpoint and save the RNG state for backward if dropout
-    at::Tensor generator_state;
+    at::Tensor generator_state = at::empty({0}, q.options());
     if( is_dropout ) {
         // See Note [Acquire lock when using random generators]
         std::lock_guard<std::mutex> lock(gen->mutex_);
